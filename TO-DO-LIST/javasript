@@ -1,0 +1,53 @@
+function addTask() {
+    let input = document.getElementById("taskInput");
+    let task = input.value.trim();
+
+    if (task === "") {
+        alert("Please enter a task!");
+        return;
+    }
+
+    let li = document.createElement("li");
+
+    let span = document.createElement("span");
+    span.textContent = task;
+    span.classList.add("task-text");
+
+    let editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.classList.add("editBtn");
+    editBtn.onclick = function () {
+        if (editBtn.textContent === "Edit") {
+            // Change to input field
+            let inputBox = document.createElement("input");
+            inputBox.type = "text";
+            inputBox.value = span.textContent;
+            inputBox.classList.add("edit-input");
+            li.replaceChild(inputBox, span);
+            editBtn.textContent = "Save";
+        } else {
+            // Save changes
+            let inputBox = li.querySelector(".edit-input");
+            let newSpan = document.createElement("span");
+            newSpan.textContent = inputBox.value.trim() || "Unnamed Task";
+            newSpan.classList.add("task-text");
+            li.replaceChild(newSpan, inputBox);
+            editBtn.textContent = "Edit";
+            span = newSpan;
+        }
+    };
+
+    let deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("deleteBtn");
+    deleteBtn.onclick = function () {
+        li.remove();
+    };
+
+    li.appendChild(span);
+    li.appendChild(editBtn);
+    li.appendChild(deleteBtn);
+
+    document.getElementById("taskList").appendChild(li);
+    input.value = "";
+}
